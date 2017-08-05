@@ -12,6 +12,20 @@ var app = express();
 // Sets an initial port. We'll use this later in our listener
 var PORT = process.env.PORT || 3000;
 
+// Socket implementation
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+server.listen(80);
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+// 
+
 // Run Morgan for Logging
 app.use(logger("dev"));
 app.use(bodyParser.json());
